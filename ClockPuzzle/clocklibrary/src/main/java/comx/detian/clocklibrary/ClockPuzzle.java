@@ -1,4 +1,4 @@
-package comx.detian.clockpuzzle;
+package comx.detian.clocklibrary;
 
 import java.util.Collections;
 import java.util.LinkedList;
