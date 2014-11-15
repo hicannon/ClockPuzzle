@@ -24,6 +24,8 @@ public class ClockView extends View implements Runnable {
     private static final long WINNING_TIME = 2500;
     private static final float NUM_PADDING = 5f;
 
+    private static final float HAND_WIDTH = 10f;
+
     public static enum GAME_STATE{
         HANDS_RESETTING, HANDS_MOVING, WINNING, PLAYING
     }
@@ -272,15 +274,31 @@ public class ClockView extends View implements Runnable {
                 double degreeDistanceCW = percentage * (targetCW - oldCWHand) * separationDegree;
                 double degreeDistanceCCW = percentage * (targetCCW - oldCCWHand) * separationDegree;
 
-                canvas.drawLine(centerX, centerY, (float) (centerX + Math.cos(separationDegree * oldCCWHand + degreeDistanceCCW) * (clockRadius - numberRadius)), (float) (centerY + Math.sin(degreeDistanceCCW + separationDegree * oldCCWHand) * (clockRadius - numberRadius)), paint);
-                canvas.drawLine(centerX, centerY, (float) (centerX + Math.cos(separationDegree * oldCWHand + degreeDistanceCW) * (clockRadius - numberRadius)), (float) (centerY + Math.sin(degreeDistanceCW + separationDegree * oldCWHand) * (clockRadius - numberRadius)), paint);
+                drawHand(canvas, centerX, centerY, (float) (separationDegree * oldCCWHand + degreeDistanceCCW), paint);
+                drawHand(canvas, centerX, centerY, (float) (separationDegree * oldCWHand + degreeDistanceCW), paint);
             }else {
                 if (i == data.getHandCCW() || i == data.getHandCW()) {
                     //paint.setColor(Color.WHITE);
-                    canvas.drawLine(centerX, centerY, numCenterX, numCenterY, paint);
+                    if (!data.isMarked(i))
+                        paint.setColor(Color.rgb(180, 0, 0));
+                    drawHand(canvas, centerX, centerY, (float) (i * separationDegree), paint);
                 }
             }
         }
+
+        canvas.restore();
+    }
+
+    private void drawHand(Canvas canvas, float startX, float startY, float degree, Paint paint){
+        canvas.save(Canvas.MATRIX_SAVE_FLAG);
+
+        canvas.rotate((float) ((degree) * 180f/Math.PI), startX, startY);
+
+        canvas.drawLine(startX, startY, (float) (startX + (1.8/3.0) * clockRadius), startY - (HAND_WIDTH/2f), paint);
+        canvas.drawLine(startX, startY, (float) (startX + (1.8/3.0) * clockRadius), startY + (HAND_WIDTH/2f), paint);
+
+        canvas.drawLine((float) (startX + (1.8/3.0) * clockRadius), startY - (HAND_WIDTH/2f), (float) (startX + clockRadius - numberRadius), startY, paint);
+        canvas.drawLine((float) (startX + (1.8/3.0) * clockRadius), startY + (HAND_WIDTH/2f), (float) (startX + clockRadius - numberRadius), startY, paint);
 
         canvas.restore();
     }
