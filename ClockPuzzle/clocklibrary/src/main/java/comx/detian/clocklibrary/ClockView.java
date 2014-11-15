@@ -114,7 +114,6 @@ public class ClockView extends View implements Runnable {
         numberRadius = (float) Math.sqrt(2 * Math.pow(clockRadius - temp, 2) - 2 * Math.pow(clockRadius - temp, 2) * Math.cos(separationDegree)) / 2.0;
         numberRadius = ((numberRadius < (clockRadius / 5.0)) ? (clockRadius / 5.0) : numberRadius);
 
-
         setTextSizeForCircle(paint, (float) (numberRadius * 2), data.getSize() + "");
 
         float centerX = cWidth / 2;
