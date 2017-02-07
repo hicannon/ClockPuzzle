@@ -196,7 +196,7 @@ public class ClockView extends View implements Runnable {
 
         if (gameState==GAME_STATE.WINNING) {
             if (System.currentTimeMillis() - startMoveTime > WINNING_TIME) {
-                setData(new ClockPuzzle(clockSize++));
+                setData(new ClockPuzzle(++clockSize));
                 gameState = GAME_STATE.PLAYING;
             }
 
